@@ -7,6 +7,9 @@ import flow_matrix
 
 
 # Load the flow matrix
+#TODO road data needed {id1 ciry1 id2 city2 flow}
+
+#f_matrix_original => flow matrix ,, codes => city ID
 f_matrix_original, codes = flow_matrix.generate_flow_matrix('roads.txt')  
 N = len(f_matrix_original)	
 #################################################

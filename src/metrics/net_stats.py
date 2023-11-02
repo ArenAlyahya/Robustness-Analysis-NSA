@@ -8,6 +8,7 @@ from vuln_calculator import GraphMaking
 
 
 ########### LOADING INPUT FILES ##############
+#BR flow_matrix and BR unique codes. csv filies
 import sys
 sys.path.append('../')
 from data_files import Input_files
@@ -76,6 +77,7 @@ for thresh in [0, avg, avg+std]:
     print('   STRENGTH')
     node_str = np.zeros(N)
     for i in range(N):
+        #out degree probably
         node_str[i] = np.sum( f_matrix[i,:] )
 
     export_data(codes, node_str, 'strength', thresh)
