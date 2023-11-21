@@ -20,6 +20,7 @@ class GraphMaking:
         self.infinities_weight = []
 
         for line in self.flow:
+            #?? Sum of all the flow in the gragh??
             self.pop += sum(line)
 
 
@@ -32,16 +33,24 @@ class GraphMaking:
         self.vertices_list = g.vs['label']
 
     def global_efficiency(self, g):
+        
         invcam = 0
-        self.mencam = g.shortest_paths_dijkstra()
+
+        # shortest path to all the nodes
+        self.mencam = g.shortest_paths_dijkstra()  
+
+        #ex: [[0, 1, 1, 1, 2], [1, 0, 1, 1, 1], [1, 1, 0, 1, 1], [1, 1, 1, 0, 2], [2, 1, 1, 2, 0]]
         for vertice in self.mencam:
             for caminho in vertice:
                 if caminho != 0:
-                    invcam += 1 / caminho
+                    # e_i,j inverse of the shortest path length between them,
+                    invcam += 1 / caminho # 1/1 + 1/1 + 1/2 ....
         eg = invcam / (self.n * (self.n - 1))
-        if self.contador == 0:
+        
+        if self.contador == 0: #is this the first
             self.origi_efi = eg
         else:
+            #compute the other eg
             self.ek.append(eg)
         self.contador += 1
         return eg
@@ -68,16 +77,21 @@ class GraphMaking:
 
         eg = self.global_efficiency(self.graph)
 
+        #go through all the number of nodes
         for i in range(0, self.order):
             g = self.graph.copy()
             del_list = []
             for target_vertex_id in range(0, self.order):
                 try:
+                    # add the edge ID between i,target_vertex_id to del_list if there is an edge
                     del_list.append(g.get_eid(i,target_vertex_id))
                 except:
                     pass
+            #compute efficiency with disconnecting a node
             g.delete_edges(del_list)
             efi = self.global_efficiency(g)
+
+            # vulnerability for each node
             v = (eg - efi) / eg
             self.vuln.append(v)
 

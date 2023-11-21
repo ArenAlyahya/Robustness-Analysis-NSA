@@ -122,8 +122,10 @@ for ol in range(len(rob_measure_lbls)):
 		P_infty_new = np.zeros(N+1)
 		for i in range(N+1):
 			if(i < len(P_infty)):
+				#no new value 
 				P_infty_new[i] = P_infty[i]
 			else:
+				# copy the last argument in P_infty
 				P_infty_new[i] = P_infty[-1]
 
 		P_infty_new[-1] = 0.0

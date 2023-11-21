@@ -26,6 +26,8 @@ relative_path = '../../results/' + in_files.get_project_name() + '/metrics/'
 
 def export_data(codes, data, stat, thresh):
     file_out = open(relative_path +  stat + '_' + str(thresh) + '.csv', 'w')
+    
+    #save the crospondig codes
     for i in range(len(codes)):
         file_out.write(str(codes[i]) + ';' + str(data[i]) + '\n')
     file_out.close()
@@ -35,9 +37,16 @@ def export_data(codes, data, stat, thresh):
     for i in range(len(data)):
         stat_array.append( ( codes[i], float(data[i]) ) )
 
+    #name of the columns 
     dtype = [('label', int), ('stat', float)]
+
+    #convert to an array
     stat_array = np.array(stat_array, dtype=dtype)
+    
+    #order using the stat value frm the smallest to the largest
     stat_array = np.sort(stat_array, order='stat')
+    
+    #flip them making the largest first
     stat_array = np.flip(stat_array)
     
     file_stat = open(relative_path + 'ordered_' + stat + '_' + str(thresh) + '.csv', 'w')
@@ -70,27 +79,35 @@ for thresh in [0, avg, avg+std]:
     # Apply threshold
     for row in range(N):
         for col in range(N):
+            # anything less than the threshold consider it as 0 flow
             if f_matrix[row][col] < thresh:
                 f_matrix[row][col] = 0
 
 
     print('   STRENGTH')
+    #initialize the strength store for N node with 0
     node_str = np.zeros(N)
     for i in range(N):
-        #out degree probably
+        #out degree probably (calculate the STRENGTH for each node )
         node_str[i] = np.sum( f_matrix[i,:] )
+
+    #save the stringth in orderd_strength_thresh.csv
 
     export_data(codes, node_str, 'strength', thresh)
 
 
     
     # Create graph, A.astype(bool).tolist() or (A / A).tolist() can also be used.
+    # Generates a graph from its adjacency matrix  --> it seems the matrix is only 0 and 1
     g = ig.Graph.Adjacency( (f_matrix > 0.0).tolist())
+    # Counts the number of vertices.
     N = g.vcount()
 
     # Convert to undirected graph
     g = g.as_undirected()
 
+    #The vertex sequence of the graph
+    #I think it names all the vertices 
     g.vs['label'] = codes
 
 
@@ -100,6 +117,7 @@ for thresh in [0, avg, avg+std]:
 
 
     print('   BETWEENNESS')
+    #Calculates or estimates the betweenness of vertices in a graph.
     betweenness = g.betweenness(vertices=None, directed=False, cutoff=None)
     export_data(codes, betweenness, 'betweenness', thresh)    
     

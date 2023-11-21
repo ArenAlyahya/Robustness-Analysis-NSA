@@ -50,6 +50,7 @@ first_date = date(2020, 2, 25)
 northern_states = [12,16,13,15,11,14,17] # North
 
 
+#preprocess data of cases-brazil-cities-time_till_Sept_2nd_2020
 for ln in data_: #delay_lines:
 
 	print(ln)
