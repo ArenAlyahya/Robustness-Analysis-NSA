@@ -82,6 +82,10 @@ for ol in range(len(rob_measure_lbls)):
 			file_name = relative_path_in + 'sorted_covid_cases_by_cities_SP.csv'
 		elif(in_files.get_project_name() == 'MG'):
 			file_name = relative_path_in + 'sorted_covid_cases_by_cities_MG.csv'
+		elif(in_files.get_project_name() == 'US'):
+			file_name = relative_path_in + 'sorted_covid_cases_by_cities_US.csv'
+		elif(in_files.get_project_name() == 'US_STATES'):
+			file_name = relative_path_in + 'sorted_covid_cases_by_states.csv'
 		else:
 			file_name = relative_path_in + 'sorted_covid_cases_by_cities.csv'
 		
@@ -100,7 +104,7 @@ for ol in range(len(rob_measure_lbls)):
 		dtype = [('label', int), ('stat', int)]
 		data = np.array(data, dtype=dtype)
 
-		print(len(data))
+		#print(len(data))
 
 		# robustness method
 		if(ol == 0):
@@ -110,7 +114,8 @@ for ol in range(len(rob_measure_lbls)):
 		elif(ol == 2):
 			number_removed,P_infty = robustness_ncomp_stats_node(g_original, data)
 
-
+		#print(number_removed)
+		#print(P_infty)
 		# Save data to disk
 		file = open(relative_path + rob_measure_lbls[ol] + str(thresh) + '.csv', 'w')
 		for i in range(len(number_removed)):

@@ -29,6 +29,7 @@ def robustness_failure_node(g, simulations=50):
 
 	number_removed = np.zeros(N+1)
 	for i in range(g.vcount()):
+		#fraction of removed nodes
 		number_removed[i] = i / float(N)
 	number_removed[N] = 1.0
 
@@ -42,12 +43,14 @@ def robustness_failure_node(g, simulations=50):
 		g_copy = g.copy()
 		P_infty[0] += 1.0
 
-		count = 1
+		count = 1 # count is for f
 		while(g_copy.vcount() > 0):
+			# choose a random node to delete: (random.random() = (0,1)), choose one node fraction of nodes
 			index = int(random.random() * g_copy.vcount())
 			g_copy.delete_vertices(index)
 
 			cl = g_copy.components()
+			
 			if(len(cl) > 0):
 				P_infty[count] += float(max(cl.sizes())) / P_infty_baseline 
 			else:
@@ -116,8 +119,10 @@ def robustness_stats_node(g, stat_array):
 	P_infty[0] = 1.0
 
 	count = 1
-	while(g_copy.vcount() > 0 and count < len(stat_array)):
+	while(g_copy.vcount() > 0 and count < len(stat_array)):	
 		index = g_copy.vs.find(label=stat_array[count-1][0]).index
+
+		
 
 		g_copy.delete_vertices(index)
 
@@ -216,6 +221,7 @@ def robustness_flow_sum_F_failure_node(g, f_matrix, codes, simulations=50):
 
 
 def robustness_flow_sum_F_stats_node(g, f_matrix, codes, stat_array):
+	
 	# Make a copy of the network
 	g_copy = g.copy()
 

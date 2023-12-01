@@ -47,7 +47,8 @@ stats = ['strength', 'degree', 'betweenness', 'vuln']
 
 
 # Three ways to measure the robustness
-rob_measure_lbls = ['a'] #["robustness_attack_", "robustness_flow_attack_sum_F_", "robustness_ncomp_attack_"]
+#rob_measure_lbls = ['a'] #["robustness_attack_", "robustness_flow_attack_sum_F_", "robustness_ncomp_attack_"]
+rob_measure_lbls = ["robustness_attack_", "robustness_flow_attack_sum_F_", "robustness_ncomp_attack_"]
 
 
 for ol in range(len(rob_measure_lbls)):
@@ -100,7 +101,7 @@ for ol in range(len(rob_measure_lbls)):
 			file_stat.close()
 			
 			
-			'''
+			
 			# robustness
 			if(ol == 0):
 				number_removed,P_infty = robustness_stats_node(g_original, stat_array)
@@ -121,4 +122,4 @@ for ol in range(len(rob_measure_lbls)):
 			file_out = open(relative_path + rob_measure_lbls[ol] + stat + '_R_V_' + str(thresh) + '.csv', 'w')
 			file_out.write(str(thresh) + ';' + str(R)  + ';' + str(V) + '\n')
 			file_out.close()
-			'''
+		

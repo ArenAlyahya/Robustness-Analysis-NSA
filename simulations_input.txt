@@ -1,7 +1,6 @@
-STATE
-input_data/states_network.csv
-input_data/states_network_codes.csv
-
+US
+input_data/US_network.csv
+input_data/US_network_codes.csv
 
 
 
@@ -11,3 +10,12 @@ FILE_INPUT:
 # 1) Project name
 # 2) network
 # 3) nodes' IDs
+
+
+
+
+
+
+US_STATES
+input_data/US_STATES_network.csv
+input_data/US_STATES_network_codes.csv

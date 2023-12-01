@@ -54,35 +54,49 @@ fig.set_size_inches(10,10)
 
 
 # Sampling the data
+'''
 if(in_files.get_project_name() == 'BR'):
 	step = 100
 elif(in_files.get_project_name() == 'SP'):
 	step = 20
-elif(in_files.get_project_name() == 'MG'):
-	step = 20
+el
+'''
+
+
+if(in_files.get_project_name() == 'US'):
+	step = 50
 else:
-	step = 1
+	step = 2
+
+colors = ['purple', 'orange', 'seagreen', 'steelblue', 'black']
+markers = ['s', 'o', '^', 'P', '*',]
+lbls = [r'$\max(s)$', r'$\max(k)$', r'$\max(\mathcal{V})$', r'$\max(b)$', 'failure',]
+
+if ((in_files.get_project_name() == 'US_STATES')):
+	colors = ['purple', 'orange', 'seagreen', 'steelblue', 'black', 'indianred']
+	markers = ['s', 'o', '^', 'P', '*', 'x']
+	lbls = [r'$\max(s)$', r'$\max(k)$', r'$\max(\mathcal{V})$', r'$\max(b)$', 'failure', 'COVID-19']
 
 
-colors = ['purple', 'orange', 'seagreen', 'steelblue', 'black', 'indianred']
-markers = ['s', 'o', '^', 'P', '*', 'x']
-lbls = [r'$\max(s)$', r'$\max(k)$', r'$\max(\mathcal{V})$', r'$\max(b)$', 'failure', 'COVID-19']
 
 
 # Figure out what is the highest f, from the COVID-19 cases
-file_name = relative_path_in + 'robustness_attack_sorted_covid_0.csv'
-array_stats = np.genfromtxt(file_name, delimiter='\t')
-f_max = array_stats[-1,0]
-f_max_ind = len(array_stats)-1
+#file_name = relative_path_in + 'robustness_attack_sorted_covid_0.csv'
+#array_stats = np.genfromtxt(file_name, delimiter='\t')
+#f_max = array_stats[-1,0]
+#f_max_ind = len(array_stats)-1
 
 
 
-for i in range(len(stats)+2):
+for i in range(len(stats)+1):
 
 
 	# 3 thresholds
 	ind = 0
+	nimber = avg+std
+
 	for thresh in [0, avg, avg+std]:
+
 
 		if(i < len(stats)):
 			file_name = relative_path_in + 'robustness_attack_' + str(stats[i]) + '_' + str(thresh) + '.csv'
@@ -103,27 +117,29 @@ for i in range(len(stats)+2):
 			R_index_ncomp = np.genfromtxt(relative_path_in + 'robustness_ncomp_failure_R_V_' + str(thresh) + '.csv', delimiter=';')
 		
 		else:
-
-			# Set the limits for the cases
-			file_name = relative_path_in + 'robustness_attack_sorted_covid_' + str(thresh) + '.csv'
-			file_name_fs_F = relative_path_in + 'robustness_attack_sorted_covid_flow_sum_F_' + str(thresh) + '.csv'
-			file_name_ncomp = relative_path_in + 'robustness_attack_sorted_covid_ncomp_' + str(thresh) + '.csv'
-
-			R_index = np.genfromtxt(relative_path_in + 'robustness_attack_sorted_covid_R_V_' + str(thresh) + '.csv', delimiter=';')
-			R_index_fs_F = np.genfromtxt(relative_path_in + 'robustness_attack_sorted_covid_flow_sum_F_R_V_' + str(thresh) + '.csv', delimiter=';')
-			R_index_ncomp = np.genfromtxt(relative_path_in + 'robustness_attack_sorted_covid_ncomp_R_V_' + str(thresh) + '.csv', delimiter=';')
-
-
-
-			array_stats = np.genfromtxt(file_name_ncomp, delimiter='\t')	
-			ax[0][ind].fill_between(array_stats[::step,0], array_stats[::step,1], color='indianred', alpha=0.3)
-
-			array_stats = np.genfromtxt(file_name, delimiter='\t')	
-			ax[1][ind].fill_between(array_stats[::step,0], array_stats[::step,1], color='indianred', alpha=0.3)
-
-			array_stats = np.genfromtxt(file_name_fs_F, delimiter='\t')	
-			ax[2][ind].fill_between(array_stats[::step,0], array_stats[::step,1], color='indianred', alpha=0.3)
 			
+			if(in_files.get_project_name() == 'US_STATES'):
+				# Set the limits for the cases
+				file_name = relative_path_in + 'robustness_attack_sorted_covid_' + str(thresh) + '.csv'
+				file_name_fs_F = relative_path_in + 'robustness_attack_sorted_covid_flow_sum_F_' + str(thresh) + '.csv'
+				file_name_ncomp = relative_path_in + 'robustness_attack_sorted_covid_ncomp_' + str(thresh) + '.csv'
+
+				R_index = np.genfromtxt(relative_path_in + 'robustness_attack_sorted_covid_R_V_' + str(thresh) + '.csv', delimiter=';')
+				R_index_fs_F = np.genfromtxt(relative_path_in + 'robustness_attack_sorted_covid_flow_sum_F_R_V_' + str(thresh) + '.csv', delimiter=';')
+				R_index_ncomp = np.genfromtxt(relative_path_in + 'robustness_attack_sorted_covid_ncomp_R_V_' + str(thresh) + '.csv', delimiter=';')
+
+
+				
+				array_stats = np.genfromtxt(file_name_ncomp, delimiter='\t')	
+				ax[0][ind].fill_between(array_stats[::step,0], array_stats[::step,1], color='indianred', alpha=0.3)
+
+				array_stats = np.genfromtxt(file_name, delimiter='\t')	
+				ax[1][ind].fill_between(array_stats[::step,0], array_stats[::step,1], color='indianred', alpha=0.3)
+
+				array_stats = np.genfromtxt(file_name_fs_F, delimiter='\t')	
+				ax[2][ind].fill_between(array_stats[::step,0], array_stats[::step,1], color='indianred', alpha=0.3)
+				
+				
 
 		array_stats = np.genfromtxt(file_name, delimiter='\t')		
 		array_stats_ncomp = np.genfromtxt(file_name_ncomp, delimiter='\t')
@@ -142,7 +158,8 @@ for i in range(len(stats)+2):
 			lb = lbls[i]
 			lb_flow_F = lbls[i]
 
-		
+
+
 		ax[0][ind].plot(array_stats_ncomp[::step,0], array_stats_ncomp[::step,1], marker=mk, color=cl, label=lb_ncomp)# marker=markers[i], color=colors[i])
 		ax[1][ind].plot(array_stats[::step,0], array_stats[::step,1], marker=mk, color=cl, label=lb)# marker=markers[i], color=colors[i])
 		ax[2][ind].plot(array_stats_fs_F[::step,0], array_stats_fs_F[::step,1], marker=mk, color=cl, label=lb_flow_F)# marker=markers[i], color=colors[i])

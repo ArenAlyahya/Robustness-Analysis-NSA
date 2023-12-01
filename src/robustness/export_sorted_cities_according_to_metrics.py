@@ -37,8 +37,9 @@ print('EXPORT CITIES SORTED ACOORDING TO METRICS')
 # Open the IBGE cities/states files ###############################
 file_name_cities = '../../input_data/IBGE_geocode_cities.csv'
 
-file_name_states = '../../input_data/IBGE_geocode_states.csv'
+#file_name_states = '../../input_data/IBGE_geocode_states.csv'
 
+file_name_states = '../../input_data/processed_State_ID.csv'
 
 file_in = open(file_name_cities, 'r')
 file_cities_lines = file_in.readlines()
@@ -68,7 +69,7 @@ codes_ibge_cities = np.array(codes_ibge_cities)
 
 for i in range(len(file_states_lines)):
 	ln = file_states_lines[i].strip()
-	ln = ln.split(';')
+	ln = ln.split(',')
 
 	if(ln[0] not in codes_ibge_states):
 		codes_ibge_states.append(int(ln[0]))
@@ -104,6 +105,7 @@ for thresh in [0, avg, avg+std]:
 		# Compute the nodes' statistics and sort them
 		stat_array = []
 		for i in range(len(st_data)):
+			#print(str(codes[i]) , "  ", str(float(st_data[i,1])))
 			stat_array.append( ( codes[i], float(st_data[i,1]) ) )
 
 		dtype = [('label', int), ('stat', float)]
@@ -117,15 +119,23 @@ for thresh in [0, avg, avg+std]:
 
 		for i in range(len(stat_array)):
 
-			if(in_files.get_project_name() == 'STATE'):
+			#if(in_files.get_project_name() == 'STATE'):
+			if(in_files.get_project_name() == 'US_STATES'):
+				#find the largest value node 
 				result = np.where(codes_ibge_states == int(stat_array[i][0]) )
+
+				#exit()
 			else:
 				result = np.where(codes_ibge_cities == int(stat_array[i][0]) )
 
 			if(len(result) > 0 and len(result[0]) > 0):
 				ind = int(result[0][0])
 
-				if(in_files.get_project_name() == 'STATE'):
+				#find the largest value node 
+
+				#if(in_files.get_project_name() == 'STATE'):
+				if(in_files.get_project_name() == 'US_STATES'):
+					#save the name of the city
 					file_out.write(str(state_names[ind]) + '\n')
 				elif(in_files.get_project_name() == 'SP' or in_files.get_project_name() == 'MG'):
 					file_out.write(str(city_names[ind]) + '\n')
@@ -144,7 +154,9 @@ for thresh in [0, avg, avg+std]:
 
 
 
-if(in_files.get_project_name() == 'STATE'):
+#if(in_files.get_project_name() == 'STATE'):
+
+if(in_files.get_project_name() == 'US_STATES'):
 	file_name = '../../results/sort_nodes_covid-19/sorted_covid_cases_by_states.csv'
 elif(in_files.get_project_name() == 'SP'):
 	file_name = '../../results/sort_nodes_covid-19/sorted_covid_cases_by_cities_SP.csv'
@@ -167,12 +179,12 @@ for i in range(len(file_lines)):
 
 dtype = [('label', int), ('stat', int)]
 
-print(data)
 
 file_out = open(relative_path_in + 'ordered_covid_cases.csv', 'w')
 
 for i in range(len(data)):
-	if(in_files.get_project_name() == 'STATE'):
+	#if(in_files.get_project_name() == 'STATE'):
+	if(in_files.get_project_name() == 'US_STATES'):
 		result = np.where(codes_ibge_states == int(data[i][0]) )
 	else:
 		result = np.where(codes_ibge_cities == int(data[i][0]) )
@@ -180,7 +192,8 @@ for i in range(len(data)):
 	if(len(result) > 0 and len(result[0]) > 0):
 		ind = int(result[0][0])
 
-		if(in_files.get_project_name() == 'STATE'):
+		#if(in_files.get_project_name() == 'STATE'):
+		if(in_files.get_project_name() == 'US_STATES'):
 			file_out.write(str(state_names[ind]) + '\n')
 		elif(in_files.get_project_name() == 'SP' or in_files.get_project_name() == 'MG'):
 			file_out.write(str(city_names[ind]) + '\n')

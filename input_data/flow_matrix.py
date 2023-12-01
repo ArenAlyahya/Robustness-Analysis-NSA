@@ -13,9 +13,13 @@ def generate_flow_matrix(file_name):
 	# For each file line, discard the text and keep only the numbers of city codes and flow 
 	for line in lines:
 		# break line into list
-		line = line.split()
+		#line = line.split()
+		line = line.split(',') #change
+		#print(line)
 		only_numbers = []
 		for i in range(len(line)):
+
+			#print(line[i])
 
 			# Checks whether it is an integer
 			try:
@@ -36,6 +40,8 @@ def generate_flow_matrix(file_name):
 				except:
 					pass
 
+		#print(codes)
+		#print(only_numbers)
 		# if list not empty, append to the cities
 		if(only_numbers):
 			cities_flow.append(only_numbers)

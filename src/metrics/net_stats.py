@@ -53,6 +53,11 @@ def export_data(codes, data, stat, thresh):
     for i in range(len(stat_array)):
         file_stat.write(str(stat_array[i][0]) + ';' + str(stat_array[i][1]) + '\n')
     file_stat.close()
+
+def nth_moment_v2(g,n):
+    print("Nodes degrees: ",g.degree())
+    degree_np = np.array(list(g.degree()))
+    return (sum(degree_np**n)/len(degree_np))
     
 
 
@@ -90,6 +95,11 @@ for thresh in [0, avg, avg+std]:
     for i in range(N):
         #out degree probably (calculate the STRENGTH for each node )
         node_str[i] = np.sum( f_matrix[i,:] )
+    
+
+
+    print("mean: ",np.mean(node_str))
+    print("std: ", np.std(node_str))
 
     #save the stringth in orderd_strength_thresh.csv
 
@@ -110,15 +120,31 @@ for thresh in [0, avg, avg+std]:
     #I think it names all the vertices 
     g.vs['label'] = codes
 
+    print("Number of nodes", g.vcount())
+    print("Number of edges", g.ecount())
+
 
     print('   DEGREE')
     degrees = g.degree()
+
+
+    print("mean: ", np.mean(degrees))
+    print("std: ", np.std(degrees))
+    print("2th_moment: ", nth_moment_v2(g,2))
+    
+
     export_data(codes, degrees, 'degree', thresh)
 
 
     print('   BETWEENNESS')
     #Calculates or estimates the betweenness of vertices in a graph.
     betweenness = g.betweenness(vertices=None, directed=False, cutoff=None)
+    
+    
+
+    print("mean: ",np.mean(betweenness))
+    print("std: ", np.std(betweenness))
+    
     export_data(codes, betweenness, 'betweenness', thresh)    
     
 
@@ -128,6 +154,10 @@ for thresh in [0, avg, avg+std]:
     grp.create_graph(g)
 
     grp.vulnerability()
+
+    print("mean", np.mean(grp.vuln))
+    print("std", np.std(grp.vuln))
+
     export_data(codes, grp.vuln, 'vuln', thresh)
 	
 
